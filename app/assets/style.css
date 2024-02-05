@@ -1,0 +1,26 @@
+.application-header {
+    height: 100%;
+    width: 100%;
+    background-color: rgb(108, 121, 135);
+}
+.application-header--title {
+    text-align: centre;
+    font-size: 10vw;
+    color: rgb(246, 251, 255);
+}
+.application-header--subtitle {
+    text-align: centre;
+    font-size: 2.5vw;
+}
+.application-tabs {
+    background-color: #f9f9f9;
+}
+.tab {
+    color: #586069;
+    display: flex;
+    align-items: centre;
+    justify-content: centre;
+}
+.tab-selected {
+    color:#3f4347;
+}
