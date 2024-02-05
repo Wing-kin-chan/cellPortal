@@ -1,3 +1,4 @@
+from templates import About, Explore, Publish
 from dash import Dash, html, dcc, Input, Output
 
 app = Dash(__name__, title = 'cellPortal')
@@ -45,17 +46,11 @@ app.layout = html.Div([
         )
 def render_content(tab):
     if tab == 'explore':
-        return html.Div([
-            html.H3('Explore content')
-        ])
+        return Explore.explore_content()
     elif tab == 'publish':
-        return html.Div([
-            html.H3('Publish content')
-        ])
+        return Publish.publish_content()
     elif tab == 'about':
-        return html.Div([
-            html.H3('About content')
-        ])
+        return About.about_content()
 
 if __name__ == '__main__':
     app.run()
