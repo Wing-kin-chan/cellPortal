@@ -2,7 +2,7 @@
 /test/Data/
 
 # Config
-/config
+/app/config/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
