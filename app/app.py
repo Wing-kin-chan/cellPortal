@@ -1,56 +1,23 @@
-from templates import About, Explore, Publish
-from dash import Dash, html, dcc, Input, Output
+# app.py
+from flask import Flask, render_template
 
-app = Dash(__name__, title = 'cellPortal')
-app.layout = html.Div([
-    html.Div(
-        className = 'application-header',
-        children = [html.H1('cellPortal', className = 'application-header--title'),
-                    html.H4('Explore, visualize, and publish your single-cell and spatial transcriptomics data.', 
-                            className = 'application-header--subtitle')]
-    ),
-    html.Br(),
-    html.Div([
-        dcc.Tabs(
-            id = 'application-tabs',
-            #value = 'explore',
-            parent_className = 'hometabs',
-            className = 'hometabs-container',
-            children = [
-                dcc.Tab(
-                    label = 'Explore',
-                    value = 'explore',
-                    className = 'tab',
-                    selected_className = 'tab-selected'
-                ),
-                dcc.Tab(
-                    label = 'Publish',
-                    value = 'publish',
-                    className = 'tab',
-                    selected_className = 'tab-selected'
-                ),
-                dcc.Tab(
-                    label = 'About',
-                    value = 'about',
-                    className = 'tab',
-                    selected_className = 'tab-selected'
-                ),
-            ]),
-        ]),
-    html.Div(id = 'tab-contents')
-])
+app = Flask(__name__)
 
-@app.callback(
-        Output(component_id = 'tab-contents', component_property = 'children'), 
-        [Input(component_id = 'application-tabs', component_property = 'value')]
-        )
-def render_content(tab):
-    if tab == 'explore':
-        return Explore.explore_content()
-    elif tab == 'publish':
-        return Publish.publish_content()
-    elif tab == 'about':
-        return About.about_content()
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/explore')
+def explore():
+    return render_template('explore.html')
+
+@app.route('/publish')
+def publish():
+    return render_template('publish.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
