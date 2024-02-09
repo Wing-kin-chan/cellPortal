@@ -51,6 +51,7 @@ def new_user(email, password):
     table.put_item(
         Item = new_user
     )
+    return 'Check email to complete registration.'
 
 def login(email, password):
     if check_email_exists(email) == 0:
