@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang = 'en'>
+    <head>
+        <meta charset = 'utf-8'>
+        <title>cellPortal</title>
+        <meta name = 'description' content = 'Single-cell and spatial transcriptomics explorer.'>
+        <link rel = 'stylesheet' type = 'text/css' href = "{{ url_for('static', filename = 'style.css') }}">
+    </head>
+    <div class = 'navbar'>
+        <b class = 'title'>cellPortal</h1>
+        <a class = 'application-navbar--button' href = "{{ url_for('explore') }}">Explore</a>
+        <a class = 'application-navbar--button' href = "{{ url_for('publish') }}">Publish</a>
+        <a class = 'application-navbar--button' href = "{{ url_for('about') }}">About</a>
+    </div>
+</html>

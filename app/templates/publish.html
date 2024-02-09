@@ -16,13 +16,15 @@
         <a class = 'application-navbar--button' href = "{{ url_for('about') }}">About</a>
     </div>
     <Br>
-    <form class = 'login-form' method = 'post' align = 'center'>
-        <input type = 'text' name = 'email' placeholder = 'Email' value = ''>
-        <Br>
-        <input type = 'password' name = 'password' placeholder = 'Password' value = ''>
-        <Br>
-        <button type = 'submit' name = 'action' value = 'login'>Login</button>
-        <Br>
-        <button type = 'submit' name = 'action' value = 'register'>Register</button>
-    </form>
+    <div align = 'center'>
+        <form class = 'login-form' method = 'post'>
+            <input type = 'text' name = 'email' placeholder = 'Email' value = ''>
+            <Br>
+            <input type = 'password' name = 'password' placeholder = 'Password' value = ''>
+            <Br>
+            <button type = 'submit' name = 'action' value = 'login'>Login</button>
+            <Br>
+            <button type = 'submit' name = 'action' value = 'register'>Register</button>
+        </form>
+    </div>
 <html/>
