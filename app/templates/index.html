@@ -4,21 +4,23 @@
         <meta charset = 'utf-8'>
         <title>cellPortal</title>
         <meta name = 'description' content = 'Single-cell and spatial transcriptomics explorer.'>
-        <link rel = 'stylesheet' type = 'text/css' href = 'app\assets\style.css'>
+        <link rel = 'stylesheet' type = 'text/css' href = "{{ url_for('static', filename = 'style.css') }}">
     </head>
-    <div class = 'application-title' align = 'center'>
-        <h1 class = 'title'>cellPortal</h1>
-        <b class = 'subtitle'>Explore, and publish single-cell and spatial transcriptomics data.</b>
-    </div>
-    <Br>
-    <div class = 'navbar' align = 'center'>
-        <a class = 'navbar-button' href = "{{ url_for('explore') }}">Explore</a>
-        <a class = 'navbar-button' href = "{{ url_for('publish') }}">Publish</a>
-        <a class = 'navbar-button' href = "{{ url_for('about') }}">About</a>
-    </div>  
-    <Br>
-    <div align = 'center'>
-        <input class = 'search-bar' placeholder = 'Publication, Authors, Cell, Tissue'>
-        <button class = 'search-button' href = ''>Search</button>
+    <div class = 'application-homepage'>
+        <div class = 'application-header' align = 'center'>
+            <h1 class = 'application-header--title'>cellPortal</h1>
+            <b class = 'application-header--subtitle'>Explore, and publish single-cell and spatial transcriptomics data.</b>
+        </div>
+        <Br>
+        <div class = 'application-navbar' align = 'center'>
+            <a class = 'application-navbar--button' href = "{{ url_for('explore') }}">Explore</a>
+            <a class = 'application-navbar--button' href = "{{ url_for('publish') }}">Publish</a>
+            <a class = 'application-navbar--button' href = "{{ url_for('about') }}">About</a>
+        </div> 
+        <Br>
+        <div align = 'center'>
+            <input class = 'application-search-bar' placeholder = 'Publication, Authors, Tissue, Cell...'>
+            <button class = 'search-button' href = ''>Search</button>
+        </div>
     </div>
 </html>

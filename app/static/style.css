@@ -1,0 +1,42 @@
+* {
+    background-color: rgb(221, 221, 221);
+}
+.application-title {
+    text-align: center;
+    height: 100%;
+    width: 100%;
+}
+.application-header--title {
+    text-align: center;
+    font-size: 10vw;
+    color: rgb(34, 40, 49);
+}
+.application-header--subtitle {
+    text-align: center;
+    font-size: 2.5vw;
+    color: rgb(34, 40, 49);
+}
+.application-navbar {
+    text-align: center;
+    background-color: rgb(48, 71, 94);
+}
+.application-navbar--button {
+    color: #586069;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.application-search-bar {
+    width: 30%;
+    height: 10%;
+    position: relative;
+    display: flex; 
+
+}
+
+.login-form {
+    margin: auto;
+    position: relative;
+    align-items: center;
+}
