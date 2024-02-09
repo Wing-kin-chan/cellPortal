@@ -52,6 +52,16 @@ def new_user(email, password):
         Item = new_user
     )
 
+def login(email, password):
+    if check_email_exists(email) == 0:
+        return 'Email does not exist'
+    credentials = get_hash(email)
+    if hash_encode(password, credentials['salt'].__str__())[0] != credentials['password']:
+        return 'Incorrect password'
+    else:
+        return 'Logged in'
+        
+
 def delete_user(email, password):
     if check_email_exists(email) < 1:
         return 'User does not exist'
