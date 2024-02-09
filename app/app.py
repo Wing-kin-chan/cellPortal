@@ -15,13 +15,14 @@ def explore():
 @app.route('/publish', methods = ['GET', 'POST'])
 def publish():
     if request.method == 'POST':
+        action = request.form.get('action')
         email = request.form.get('email')
         password = request.form.get('password')
-        response = users.new_user(email, password)
-        if response == 'Email in use':
-            return response
-        else:
-            return 'Check email to complete registration'
+        if action == 'login':
+            response = users.login(email, password)
+        elif action == 'register':
+            response = users.new_user(email, password)
+        return response
     return render_template('publish.html')
 
 @app.route('/about')
