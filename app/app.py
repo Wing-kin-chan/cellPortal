@@ -12,8 +12,16 @@ def index():
 def explore():
     return render_template('explore.html')
 
-@app.route('/publish')
+@app.route('/publish', methods = ['GET', 'POST'])
 def publish():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        response = users.new_user(email, password)
+        if response == 'Email in use':
+            return response
+        else:
+            return 'Check email to complete registration'
     return render_template('publish.html')
 
 @app.route('/about')
