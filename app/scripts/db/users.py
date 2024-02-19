@@ -33,6 +33,15 @@ def check_email_exists(email: str):
     )
     return response['Count']
 
+def get_user(email):
+    response = table.get_item(
+        Key = {
+            'email': email
+        },
+        AttributesToGet = ['email']
+    )
+    return response['Item']
+
 def get_hash(email):
     response = table.get_item(
         Key = {
@@ -51,17 +60,7 @@ def new_user(email, password):
     table.put_item(
         Item = new_user
     )
-    return 'Check email to complete registration.'
-
-def login(email, password):
-    if check_email_exists(email) == 0:
-        return 'Email does not exist'
-    credentials = get_hash(email)
-    if hash_encode(password, credentials['salt'].__str__())[0] != credentials['password']:
-        return 'Incorrect password'
-    else:
-        return 'Logged in'
-        
+    return 'Check email to complete registration.' 
 
 def delete_user(email, password):
     if check_email_exists(email) < 1:
