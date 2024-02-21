@@ -36,22 +36,13 @@ def check_email_exists(email: str):
     )
     return response['Count']
 
-def get_hash(email):
-    response = table.get_item(
-        Key = {
-            'email': email
-        },
-        AttributesToGet = ['password', 'salt']
-    )
-    return response['Item']
-
 class User(UserMixin):
     '''
     User class
     '''
-    def __init__(self, uuid, email, studies, password, salt):
-        self.uuid = uuid
+    def __init__(self, email: str, uuid: str, studies: list, password: str, salt: bytes):
         self.email = email
+        self.uuid = uuid
         self.studies = studies
         self.password = password
         self.salt = salt
@@ -64,19 +55,23 @@ class User(UserMixin):
     
     def is_anonymous(self):
         return False
-
+    
+    def get_id(self):
+        return self.email
+        
     @staticmethod
-    def get(uuid):
+    def get_user(email: str):
         try:
             response = table.get_item(
-                Key = {'uuid': uuid},
-                AttributesToGet = ['uuid', 'email', 'studies']
+                Key = {'email': email}
                 )
             user_data = response['Item']
             if user_data:
-                return User(uuid = user_data['uuid'],
+                return User(uuid = user_data['id'],
                             email = user_data['email'],
-                            studies = user_data['studies'])
+                            studies = user_data['studies'],
+                            password = user_data['password'],
+                            salt = user_data['salt'])
             else:
                 return None
         except ClientError as e:
@@ -84,14 +79,14 @@ class User(UserMixin):
             return None
 
     @staticmethod
-    def create(email, password):
+    def create(email: str, password: str):
         if check_email_exists(email) > 0:
             return 'Email in use'
         else:
             hashed = hash_encode(password)
-            uuid = email + datetime.today().strftime('%Y-%m-%d %H:%M:%S')
-            uuid = hash_encode(uuid)[0]
-            new_user = {'uuid': uuid, 
+            id = email + datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+            id = hash_encode(id)[0]
+            new_user = {'id': id, 
                         'email': email, 
                         'password': hashed[0], 
                         'salt': hashed[1], 
@@ -107,16 +102,16 @@ class User(UserMixin):
                 return None
 
     @staticmethod
-    def remove(email, password):
+    def remove(email: str):
         if check_email_exists(email) < 1:
             return 'User does not exist'
-        credentials = get_hash(email)
-        if hash_encode(password, credentials['salt'].__str__())[0] != credentials['password']:
-            return 'Incorrect password'
-        else:
+        try:
             table.delete_item(
                 Key = {
                     'email': email
                 }
             )
+        except ClientError as e:
+            print(e.response['Error']['Message'])
+            return None
 
