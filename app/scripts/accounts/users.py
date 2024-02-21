@@ -8,7 +8,7 @@ from botocore.exceptions import ClientError
 import bcrypt
 from config import config
 from flask_login import UserMixin
-from datetime import datetime
+from datetime import datetime, timedelta
 
 session = Session(aws_access_key_id = config.ACCESS_KEY_ID,
                   aws_secret_access_key = config.SECRET_ACCESS_KEY,
@@ -91,7 +91,7 @@ class User(UserMixin):
                         'password': hashed[0], 
                         'salt': hashed[1], 
                         'verified': False,
-                        'studies': []}
+                        'expireAt': int((datetime.now() + timedelta(days = 7)).timestamp())}
             try:
                 table.put_item(
                     Item = new_user
