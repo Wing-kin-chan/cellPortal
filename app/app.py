@@ -1,7 +1,7 @@
 # app.py
 from flask import Flask, render_template, request, redirect, url_for
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
-from scripts.db.users import User, hash_encode
+from scripts.accounts.users import User, hash_encode
 from config import config
 
 login_manager = LoginManager()
