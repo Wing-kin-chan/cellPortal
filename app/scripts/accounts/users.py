@@ -90,8 +90,8 @@ class User(UserMixin):
                         'email': email, 
                         'password': hashed[0], 
                         'salt': hashed[1], 
-                        'verified': False,
-                        'expireAt': int((datetime.now() + timedelta(days = 7)).timestamp())}
+                        'isVerified': False
+                        }
             try:
                 table.put_item(
                     Item = new_user

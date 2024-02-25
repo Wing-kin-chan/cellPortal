@@ -4,7 +4,7 @@ spam account generation.
 '''
 
 from itsdangerous import URLSafeTimedSerializer
-from app import app
+from application import app
 
 def generate_token(email: str):
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
