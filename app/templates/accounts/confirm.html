@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang = 'en'>
+    <head>
+        <meta charset = 'utf-8'>
+        <title>cellPortal</title>
+        <meta name = 'description' content = 'Single-cell and spatial transcriptomics explorer.'>
+        <link rel = 'stylesheet' type = 'text/css' href = "{{ url_for('static', filename = 'style.css') }}">
+    </head>
+    <p>
+        Welcome! Thanks for signing up. Please follow this link to activate your
+        account:
+    </p>
+    <p><a href="{{ confirm_url }}">{{ confirm_url }}</a></p>
+    <br />
+    <p>Cheers!</p>
+</html>
