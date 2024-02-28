@@ -8,7 +8,8 @@ from botocore.exceptions import ClientError
 import bcrypt
 from config import config
 from flask_login import UserMixin
-from datetime import datetime, timedelta
+from datetime import datetime
+
 
 session = Session(aws_access_key_id = config.ACCESS_KEY_ID,
                   aws_secret_access_key = config.SECRET_ACCESS_KEY,
@@ -40,12 +41,12 @@ class User(UserMixin):
     '''
     User class
     '''
-    def __init__(self, email: str, uuid: str, studies: list, password: str, salt: bytes):
+    def __init__(self, email: str, uuid: str, password: str, salt: bytes, isVerified: bool):
         self.email = email
         self.uuid = uuid
-        self.studies = studies
         self.password = password
         self.salt = salt
+        self.isVerified = isVerified
     
     def is_authenticated(self):
         return True
@@ -69,9 +70,9 @@ class User(UserMixin):
             if user_data:
                 return User(uuid = user_data['id'],
                             email = user_data['email'],
-                            studies = user_data['studies'],
                             password = user_data['password'],
-                            salt = user_data['salt'])
+                            salt = user_data['salt'],
+                            isVerified = user_data['isVerified'])
             else:
                 return None
         except ClientError as e:
@@ -97,6 +98,21 @@ class User(UserMixin):
                     Item = new_user
                 )
                 return 'Check email to complete registration.' 
+            except ClientError as e:
+                print(e.response['Error']['Message'])
+                return None
+
+    @staticmethod
+    def verify(email: str):
+        if check_email_exists(email) < 1:
+            return 'User does not exist'
+        else:
+            try:
+                table.update_item(
+                    Key = {'email': email},
+                    UpdateExpression = 'SET isVerified = :value',
+                    ExpressionAttributeValues = {':value': True}
+                )
             except ClientError as e:
                 print(e.response['Error']['Message'])
                 return None
