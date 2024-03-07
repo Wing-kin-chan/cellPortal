@@ -7,42 +7,46 @@ from application import app
 def index():
     return render_template('index.html')
 
+
 @app.route('/explore')
 def explore():
     return render_template('explore.html')
-
-@app.route('/profile', methods = ['GET', 'POST'])
-@login_required
-def profile():
-    if not current_user.isVerified:
-        return redirect(url_for('inactive'))
-    else:
-        return render_template('accounts/profile')
-
-@app.route('/confirm/<token>')
-@login_required
-def confirm(token):
-    if current_user.isVerified:
-        flash('Account has already been confirmed', 'success')
-        return redirect(url_for('profile'))
-    user = users.User.get_user(current_user.email)
-    email = tokenizer.confirm_token(token)
-    if user.email == email:
-        users.User.verify(user.email)
-        flash('Email confirmed! You should be redirected to your profile.')
-        return redirect(url_for('profile'))
-    else:
-        flash('The confirmation link is invalid or has expired.', 'danger')
-        logout_user()
-        return redirect(url_for('index'))
 
 
 @app.route('/inactive')
 @login_required
 def inactive():
-    if current_user.isVerified:
+    if current_user.isVerified is True:
         return redirect(url_for('index'))
     return render_template('accounts/inactive.html')
+
+
+@app.route('/profile', methods = ['GET', 'POST'])
+@login_required
+def profile():
+    if current_user.isVerified is False:
+        return redirect(url_for('inactive'))
+    else:
+        return render_template('accounts/profile.html')
+
+
+@app.route('/confirm/<token>')
+@login_required
+def confirm(token):
+    try:
+        email = tokenizer.confirm_token(token)
+    except:
+        flash('The confirmation link is invalid or expired.', 'danger')
+    user = users.User.get_user(email)
+    if user.isVerified is True:
+        flash('This account has already been verified.')
+        return redirect(url_for('profile'))
+    else:
+        user.isVerified = True
+        users.User.verify(email)
+        flash('Thank you for confirming your account! You should be redirected to your profile.')
+        return redirect(url_for('profile'))
+
 
 @app.route('/resend')
 @login_required
@@ -55,6 +59,7 @@ def resend():
     subject = 'cellPortal: Confirm Your Email'
     confirm_email.send_verification(current_user.email, subject, html)
     return redirect(url_for('inactive'))
+
 
 @app.route('/publish', methods = ['GET', 'POST'])
 def publish():
@@ -89,9 +94,11 @@ def publish():
             return redirect(url_for('inactive'))
     return render_template('publish.html')
 
+
 @app.route('/about')
 def about():
     return render_template('about.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
