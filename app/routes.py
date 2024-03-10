@@ -5,17 +5,26 @@ from application import app
 
 @app.route('/')
 def index():
+    '''Web application homepage.'''
     return render_template('index.html')
 
 
 @app.route('/explore')
 def explore():
+    '''
+    Page to explore and search for specific experiments.
+    #TODO: 
+        - Add logic to search the experiments database.
+        - Functions to display list of experiments.
+        - Page should have buttons to filter search results.
+    '''
     return render_template('explore.html')
 
 
 @app.route('/inactive')
 @login_required
 def inactive():
+    '''Page to handle accounts that have not verified their emails.'''
     if current_user.isVerified is True:
         return redirect(url_for('index'))
     return render_template('accounts/inactive.html')
@@ -24,6 +33,11 @@ def inactive():
 @app.route('/profile', methods = ['GET', 'POST'])
 @login_required
 def profile():
+    '''
+    Profile page.
+    Users should be able to view their experiments, as well as upload and delete experiments.
+    Additionally, should be able to alter/update user information should peers want to contact them.
+    '''
     if current_user.isVerified is False:
         return redirect(url_for('inactive'))
     else:
@@ -33,6 +47,7 @@ def profile():
 @app.route('/confirm/<token>')
 @login_required
 def confirm(token):
+    '''Page to handle account and email verification.'''
     try:
         email = tokenizer.confirm_token(token)
     except:
@@ -51,6 +66,7 @@ def confirm(token):
 @app.route('/resend')
 @login_required
 def resend():
+    '''Page to handle resending verification email.'''
     if current_user.isVerified:
         return redirect(url_for('index'))
     new_token = tokenizer.generate_token(current_user.email)
