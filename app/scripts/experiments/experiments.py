@@ -48,3 +48,25 @@ class Experiment:
             Title: {self.title}  
             S3 Address: {self.s3}  
         ''')
+
+
+    @staticmethod
+    def record(self) -> None:
+        '''Stores metadata of experiment in DynamoDB'''
+        pass
+    
+
+    @staticmethod
+    def erase(self) -> None:
+        '''Removes metadata of experiment from DynamoDB'''
+        pass
+
+
+def query(filters: dict) -> dict:
+    '''
+    Function to query cellPortal experiments metadata table in AWS DynamoDB.
+
+    Takes search parameters from search bar and/or filter as JSON/Dict format  
+    and returns dictionary of items.
+    '''
+    pass
