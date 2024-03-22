@@ -1,4 +1,31 @@
 <!DOCTYPE html>
 <html lang = 'en'>
-    <b>Profile Page</b>
+    <head>
+        <meta charset = 'utf-8'>
+        <title>cellPortal</title>
+        <meta name = 'description' content = 'Single-cell and spatial transcriptomics explorer.'>
+        <link rel = 'stylesheet' type = 'text/css' href = "{{ url_for('static', filename = 'style.css') }}">
+    </head>
+    <nav class = profile-navigation>
+        <a>Home</a>
+        <a>Experiments</a>
+        <a>Details</a>
+        <a>Billing</a>
+    </nav>
+    <h3 class = profile-section-title>Experiments</h3>
+    <div align = 'right'>
+        <input class = 'profile-experiments-search' placeholder = 'Search Your Experiments'>
+        <button class = 'search-button' href = ''>Search</button>
+    </div>
+    <div class = profile-experiments-list align = 'right'>
+        <ul>
+            {% for experiment in user_experiments %}
+                <li class = experiment-list>{{ experiment['title'] }}</li>
+                <button class = delete-experiment-button>Delete</button>
+            {% endfor %}
+        </ul>
+    </div>
+    <div align = right>
+        <button class = upload-experiment>Upload</button>
+    </div>
 </html>
