@@ -1,6 +1,7 @@
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required, login_user, logout_user, current_user
 from scripts.accounts import users, tokenizer, confirm_email
+from scripts.experiments import experiments
 from application import app
 
 @app.route('/')
@@ -41,7 +42,8 @@ def profile():
     if current_user.isVerified is False:
         return redirect(url_for('inactive'))
     else:
-        return render_template('accounts/profile.html')
+        return render_template('accounts/profile.html', 
+                               user_experiments = experiments.get_user_experiments(current_user.uuid))
 
 
 @app.route('/confirm/<token>')
@@ -79,6 +81,7 @@ def resend():
 
 @app.route('/publish', methods = ['GET', 'POST'])
 def publish():
+    '''Publish page'''
     if request.method == 'POST':
         action = request.form.get('action')
         email = request.form.get('email')
