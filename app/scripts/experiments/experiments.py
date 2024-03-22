@@ -27,7 +27,8 @@ class Experiment:
                  organism: str, 
                  celltypes: list,
                  s3: str,
-                 tags: list):
+                 tags: list,
+                 article: str):
         self.uuid = uuid
         self.title = title
         self.cells = cells
@@ -37,6 +38,7 @@ class Experiment:
         self.celltypes = celltypes
         self.s3 = s3
         self.tags = tags
+        self.article = article
 
     def __str__(self):
         return f'Owner UUID: {self.uuid} Title: {self.title} S3 Address: {self.s3}'
@@ -53,13 +55,51 @@ class Experiment:
     @staticmethod
     def record(self) -> None:
         '''Stores metadata of experiment in DynamoDB'''
-        pass
+        try:
+            table.put_item(
+                Item = {
+                    'userID': self.uuid,
+                    'title': self.title,
+                    'cells': self.cells,
+                    'assay': self.assay,
+                    'tissue': self.tissue,
+                    'orgnaism': self.organism,
+                    'celltypes': self.celltypes,
+                    's3': self.s3,
+                    'tags': self.tags,
+                    'article': self.article
+                }
+            )
+            return None 
+        except ClientError as e:
+            print(e.response['Error']['Message'])
+            return None
     
 
     @staticmethod
     def erase(self) -> None:
         '''Removes metadata of experiment from DynamoDB'''
         pass
+
+def get_user_experiments(uuid: str) -> dict:
+    '''
+    Gets all experiments owned by a user.
+    '''
+    try:
+        response = table.query(
+            KeyConditionExpression = '#pk = :pk',
+            ExpressionAttributeNames = {
+                '#pk': 'userID'
+            },
+            ExpressionAttributeValues = {
+                ':pk': uuid
+            },
+    )
+    except ClientError as e:
+        print(e)
+        return None
+    
+    return response['Items']
 
 
 def query(filters: dict) -> dict:
