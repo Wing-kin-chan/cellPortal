@@ -42,9 +42,38 @@ def profile():
     if current_user.isVerified is False:
         return redirect(url_for('inactive'))
     else:
+        experiments = experiments.get_user_experiments(current_user.uuid)
+        if request.method == 'POST':
+            action = request.form.get('action')
+            if action is 'edit':
+                redirect(url_for('edit'))
+            if action is 'delete':
+                experiments.erase()
+                redirect(url_for('profile'))
+            if action is 'upload':
+                redirect(url_for('upload'))
+            if action is 'search':
+                experiments = experiments.query()
         return render_template('accounts/profile.html', 
-                               user_experiments = experiments.get_user_experiments(current_user.uuid))
+                               user_experiments = experiments)
 
+
+@app.route('/profile/billing')
+@login_required
+def billing():
+    '''
+    Page to hold and edit billing information of user.
+    '''
+    return render_template('accounts/billing.html')
+
+
+@app.route('/profile/details')
+@login_required
+def details():
+    '''
+    Page to hold and edit account details of user.
+    '''
+    return render_template('accounts/details.html')
 
 @app.route('/confirm/<token>')
 @login_required
